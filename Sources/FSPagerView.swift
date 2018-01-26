@@ -21,7 +21,7 @@ public protocol FSPagerViewDataSource: NSObjectProtocol {
     
     /// Asks your data source object for the cell that corresponds to the specified item in the pager view.
     @objc(pagerView:cellForItemAtIndex:)
-    func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell
+    func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> UICollectionViewCell
     
 }
 
@@ -439,13 +439,10 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     ///   - index: The index specifying the location of the cell.
     /// - Returns: A valid FSPagerViewCell object.
     @objc(dequeueReusableCellWithReuseIdentifier:atIndex:)
-    open func dequeueReusableCell(withReuseIdentifier identifier: String, at index: Int) -> FSPagerViewCell {
+    open func dequeueReusableCell(withReuseIdentifier identifier: String, at index: Int) -> UICollectionViewCell {
         let indexPath = IndexPath(item: index, section: self.dequeingSection)
         let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
-        guard cell.isKind(of: FSPagerViewCell.self) else {
-            fatalError("Cell class must be subclass of FSPagerViewCell")
-        }
-        return cell as! FSPagerViewCell
+        return cell
     }
     
     /// Reloads all of the data for the collection view.
