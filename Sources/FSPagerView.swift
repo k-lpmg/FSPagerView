@@ -46,11 +46,11 @@ public protocol FSPagerViewDelegate: NSObjectProtocol {
     
     /// Tells the delegate that the specified cell is about to be displayed in the pager view.
     @objc(pagerView:willDisplayCell:forItemAtIndex:)
-    optional func pagerView(_ pagerView: FSPagerView, willDisplay cell: FSPagerViewCell, forItemAt index: Int)
+    optional func pagerView(_ pagerView: FSPagerView, willDisplay cell: UICollectionViewCell, forItemAt index: Int)
     
     /// Tells the delegate that the specified cell was removed from the pager view.
     @objc(pagerView:didEndDisplayingCell:forItemAtIndex:)
-    optional func pagerView(_ pagerView: FSPagerView, didEndDisplaying cell: FSPagerViewCell, forItemAt index: Int)
+    optional func pagerView(_ pagerView: FSPagerView, didEndDisplaying cell: UICollectionViewCell, forItemAt index: Int)
     
     /// Tells the delegate when the pager view is about to start scrolling the content.
     @objc(pagerViewWillBeginDragging:)
@@ -353,7 +353,7 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
             return
         }
         let index = indexPath.item % self.numberOfItems
-        function(self,cell as! FSPagerViewCell,index)
+        function(self,cell,index)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -361,7 +361,7 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
             return
         }
         let index = indexPath.item % self.numberOfItems
-        function(self,cell as! FSPagerViewCell,index)
+        function(self,cell,index)
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -425,7 +425,7 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     /// Register a nib file for use in creating new pager view cells.
     ///
     /// - Parameters:
-    ///   - nib: The nib object containing the cell object. The nib file must contain only one top-level object and that object must be of the type FSPagerViewCell.
+    ///   - nib: The nib object containing the cell object. The nib file must contain only one top-level object and that object must be of the type UICollectionViewCell.
     ///   - identifier: The reuse identifier to associate with the specified nib file. This parameter must not be nil and must not be an empty string.
     @objc(registerNib:forCellWithReuseIdentifier:)
     open func register(_ nib: UINib?, forCellWithReuseIdentifier identifier: String) {
@@ -437,7 +437,7 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     /// - Parameters:
     ///   - identifier: The reuse identifier for the specified cell. This parameter must not be nil.
     ///   - index: The index specifying the location of the cell.
-    /// - Returns: A valid FSPagerViewCell object.
+    /// - Returns: A valid UICollectionViewCell object.
     @objc(dequeueReusableCellWithReuseIdentifier:atIndex:)
     open func dequeueReusableCell(withReuseIdentifier identifier: String, at index: Int) -> UICollectionViewCell {
         let indexPath = IndexPath(item: index, section: self.dequeingSection)
@@ -503,7 +503,7 @@ open class FSPagerView: UIView,UICollectionViewDataSource,UICollectionViewDelega
     /// - Parameter cell: The cell object whose index you want.
     /// - Returns: The index of the cell or NSNotFound if the specified cell is not in the pager view.
     @objc(indexForCell:)
-    open func index(for cell: FSPagerViewCell) -> Int {
+    open func index(for cell: UICollectionViewCell) -> Int {
         guard let indexPath = self.collectionView.indexPath(for: cell) else {
             return NSNotFound
         }
